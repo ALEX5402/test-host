@@ -1,0 +1,45 @@
+name: Linux-Java-SSH-Timer-Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-jar:
+    name: Run JAR File
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Run JAR File
+        run: java -jar haha.jar
+
+  create-ssh-server:
+    name: Create SSH Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install OpenSSH Server
+        run: sudo apt-get install -y openssh-server
+
+      - name: Display SSH Server Key
+        run: |
+          sudo service ssh start
+          echo "SSH Server Key:"
+          cat /etc/ssh/ssh_host_rsa_key.pub
+
+  start-python-timer:
+    name: Start Python Timer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Run Python Script
+        run: python timer.py
